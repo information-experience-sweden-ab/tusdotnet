@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28407.52
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{22CCF3EF-66E2-4710-8361-EBF5517A3B56}"
 EndProject
@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore_netcoreapp2.1_Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore_netcoreapp2.2_TestApp", "TestSites\AspNetCore_netcoreapp2.2_TestApp\AspNetCore_netcoreapp2.2_TestApp.csproj", "{356CF8A1-03E1-40B9-945F-3C9D7F49DA91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tusdotnet.benchmark", "tusdotnet.benchmark\tusdotnet.benchmark.csproj", "{3E02BAE7-09DD-497D-B9B9-F2A0CD86C454}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tusdotnet.benchmark", "tusdotnet.benchmark\tusdotnet.benchmark.csproj", "{3E02BAE7-09DD-497D-B9B9-F2A0CD86C454}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

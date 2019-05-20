@@ -19,7 +19,7 @@ Comments, ideas, questions and PRs are welcome :)
 
 ## Install
 
-Visual Studio
+Package manager
 
 ``PM> Install-Package tusdotnet``
 
@@ -32,7 +32,7 @@ Visual Studio
 Create your Startup class as you would normally do. Add a using statement for `tusdotnet` and run `UseTus` on the app builder. More options and events are available on the [wiki](https://github.com/tusdotnet/tusdotnet/wiki/Configuration).
 
 ```csharp
-app.UseTus(httpContext => new DefaultTusConfiguration
+app.UseTus(context => new DefaultTusConfiguration
 {
     // c:\tusfiles is where to store files
     Store = new TusDiskStore(@"C:\tusfiles\"),
@@ -40,9 +40,9 @@ app.UseTus(httpContext => new DefaultTusConfiguration
     UrlPath = "/files",
     Events = new Events
     {
-        OnFileCompleteAsync = async eventContext =>
+        OnFileCompleteAsync = async ctx =>
         {
-            ITusFile file = await eventContext.GetFileAsync();
+            var file = await ((ITusReadableStore)ctx.Store).GetFileAsync(ctx.FileId, ctx.CancellationToken);
             await DoSomeProcessing(file);
         }
     }

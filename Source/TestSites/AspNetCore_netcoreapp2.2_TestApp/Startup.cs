@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using tusdotnet;
@@ -17,6 +18,8 @@ using tusdotnet.Models;
 using tusdotnet.Models.Concatenation;
 using tusdotnet.Models.Configuration;
 using tusdotnet.Models.Expiration;
+using tusdotnet.Stores;
+
 using tusdotnet.Stores;
 
 namespace AspNetCore_netcoreapp2_2_TestApp
@@ -36,7 +39,7 @@ namespace AspNetCore_netcoreapp2_2_TestApp
         {
             services.AddCors();
             services.AddSingleton(CreateTusConfiguration);
-            services.AddHostedService<ExpiredFilesCleanupService>();
+            //services.AddHostedService<ExpiredFilesCleanupService>();
             services.AddAuthentication("BasicAuthentication")
                     .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
         }
@@ -72,6 +75,8 @@ namespace AspNetCore_netcoreapp2_2_TestApp
             app.UseSimpleDownloadMiddleware(httpContext => Task.FromResult(httpContext.RequestServices.GetService<DefaultTusConfiguration>()));
         }
 
+         
+
         private DefaultTusConfiguration CreateTusConfiguration(IServiceProvider serviceProvider)
         {
             var logger = serviceProvider.GetService<ILoggerFactory>().CreateLogger<Startup>();
@@ -80,10 +85,32 @@ namespace AspNetCore_netcoreapp2_2_TestApp
             // the new authorization event.
             var enableAuthorize = _configuration.GetValue<bool>("EnableOnAuthorize");
 
+            var uploadfoldername = "tusfiles";
+
+            string connectionString;
+            string containerName;
+            string tempFileFolderPath;
+
+            var uploads = Path.Combine(Directory.GetCurrentDirectory(), uploadfoldername);
+
+            if (!Directory.Exists(uploads))
+            {
+                Directory.CreateDirectory(uploadfoldername);
+            }
+
+            connectionString = "";
+            containerName = "eliascontainer";
+            tempFileFolderPath = Path.Combine(Directory.GetCurrentDirectory(), uploadfoldername);
+
             return new DefaultTusConfiguration
             {
                 UrlPath = "/files",
-                Store = new TusDiskStore(@"C:\tusfiles\"),
+                //Store = new TusDiskStore(uploads/*@"C:\tusfiles\"*/),
+                //Store = new TusDiskStore(uploads),
+                
+            Store = new TusBlobStore(connectionString, containerName),
+
+
                 Events = new Events
                 {
                     OnAuthorizeAsync = ctx =>
